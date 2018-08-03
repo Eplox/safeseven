@@ -1,0 +1,118 @@
+##$$ Requirements:
+
+* Linux OS with SCTP support
+* JRE 1.7(Java SE Runtime Environment) or above
+
+
+JDK 7u6 and later releases include JavaFX SDK (version 2.2 or later). The JavaFX SDK and Runtime are installed and integrated into the standard JDK directory structure.
+For information about how to work with JavaFX, see http://docs.oracle.com/javase/8/javase-clienttechnologies.html
+
+Installation of the 64-bit JRE on Linux Platforms
+
+This procedure installs the Java Runtime Environment (JRE) for 64-bit Linux, using an archive binary file (.tar.gz). These instructions use the following file:
+jre-8uversion-linux-x64.tar.gz
+
+Download the file. Before the file can be downloaded, you must accept the license agreement. The archive binary can be installed by anyone (not only root users), in any location that you can write to. However, only the root user can install the JDK into the system location.
+Change directory to the location where you would
+like the JDK to be installed, then move the .tar.gz
+archive binary to the current directory.
+Unpack the tarball and install the JRE:
+% tar zxvf jre-8uversion-linux-x64.tar.gz
+The Java Development Kit files are installed in a directory called jdk1.8.0_version in the current directory.
+Delete the .tar.gz file if you want to save disk space.
+Now, Extract the safeseven files to your home directory. Now Open WireShark.(well, wireshark is preinstalled in Kali Linux)
+Choose "SCTP" Protocol & Start capturing data packets.
+Then Open Terminal. I'm Writing Here Few Commands For Using the Java .Jar Files;
+
+ 
+
+
+<Before Running Client On Actual SS7 Network>
+Edit client_config file(Edit Details of Orange Marked Area)
+
+//Client
+SERVER_IP="IP of STP you are connecting to"
+CLIENT_IP="IP address provisioned for you in STP"
+SERVER_PORT="STP port"
+CLIENT_PORT="client provisioned port"
+IS_SERVER=FALSE "should be always false"
+Local_SPC="point code assigned to you"
+Remote_SPC="point code of STP"
+Local_SSN="local ssn"
+Remote_SSN="remote ssn"
+Routing_Context="routing context assigned to you by STP"
+NETWORK_INDICATOR="Network indicator"
+Local_GT="Local global title assigned to you"
+Remote_GT="remote Global title you are testing"
+
+
+ 
+
+<#Commands For Simulating SS7 Network/#>
+Simulating HLR:
+java -jar server.jar hlr_config
+
+Simulating MSC/VLR:
+java -jar server.jar vlr_config
+
+Running STP: 
+java -jar STP.jar stp_config
+
+
+
+
+<#Commands For Running SafeSeven/#>
+
+SMS Related Operations: 
+java -jar SMS.jar client_config
+
+USSD Related Operations: 
+java -jar ussd.jar client_config
+
+Call Related Operations: 
+java -jar Call_Handling.jar client_config
+
+Mobility Related Operations: 
+java -jar Mobility.jar client_config
+
+ 
+
+ 
+
+Here Are Some Steps To Intercepting SMS By Using MapSMS.jar:
+
+Step 1.
+1. Attacker sends request SendRoutingInfoForSM addressing MAP(Mobile Application Part) message by MSISDN(Target Phone Number)
+2.HLR(Home Resource Locater) replies with: own address, serving MSC address, IMSI(The International Mobile Subscriber Identity (IMSI) is an internationally standardized unique number to identify a mobile subscriber. The IMSI is defined in ITU-T Recommendation E.212. The IMSI consists of a Mobile Country Code (MCC), a Mobile Network Code (MNC) and a Mobile Station Identification Number (MSIN).)
+
+ 
+
+Step 2.
+1. Attacker registers Target Phone Number On the fake MSC
+2. HLR sets up new location for our target number
+3.HLR asks real MSC to release a memory
+
+ 
+
+ 
+
+Step 3.
+
+1. Someone sends SMS to Target Number
+2. MSC translates the SMS to SMS-C
+3. SMS-C requests HLR for Target number's location
+4. HLR replies with a fake MSC address
+5. SMS-C translates SMS to the fake MSC & Your Wireshark captures SMS
+
+
+There It is...
+
+
+If you want to more develop on this by your self so you can download following program:
+Eclipse Javascript IDE Download
+Xampp Download For Linux
+JDK(Java Development Kit) 8 Download
+
+ 
+
+How to find Info For Accessing SS7 Network(Sending SRISM)
